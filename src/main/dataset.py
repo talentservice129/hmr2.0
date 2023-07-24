@@ -4,7 +4,7 @@ from time import time
 
 import tensorflow as tf
 
-from main.config import Config
+from .config import Config
 
 
 class Dataset(object):

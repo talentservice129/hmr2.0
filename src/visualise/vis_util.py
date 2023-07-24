@@ -19,9 +19,10 @@ sys.path.append(os.path.abspath('..'))
 # tf INFO and WARNING messages are not printed
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-from main.config import Config
-from main.dataset import Dataset
-from main.local import LocalConfig
+from src.main.config import Config
+from src.main.dataset import Dataset
+from src.main.local import LocalConfig
+from src.main import openpose as op_util
 
 colors = {
     'pink': [197, 27, 125],
@@ -129,22 +130,28 @@ def get_original(params, verts, cam, joints):
     return vert_shifted, kp_original  # , cam_for_render
 
 
-def preprocess_image(img_path, img_size):
+def preprocess_image(img_path, img_size, json_path=None):
     img = cv2.imread(img_path)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-    scale = 1.
-    if np.max(img.shape[:2]) != img_size:
-        print('Resizing image to {}'.format(img_size))
-        scale = (float(img_size) / np.max(img.shape[:2]))
+    if json_path is None:
+        scale = 1.
+        if np.max(img.shape[:2]) != img_size:
+            print('Resizing image to {}'.format(img_size))
+            scale = (float(img_size) / np.max(img.shape[:2]))
+        center = np.round(np.array(img.shape[:2]) / 2).astype(int)
+        center = center[::-1]  # image center in (x,y)
+    else:
+        scale, center = op_util.get_bbox(json_path)
 
     image_scaled, actual_factor = resize_img(img, scale)
-    center = np.round(np.array(image_scaled.shape[:2]) / 2).astype(int)
-    center = center[::-1]  # image center in (x,y)
+    # Swap so it's [x,y]
+    scale_factors = [actual_factor[1], actual_factor[0]]
+    center_scaled = np.round(center * scale_factors).astype(int)
 
     margin = int(img_size / 2)
     image_pad = np.pad(image_scaled, ((margin,), (margin,), (0,)), mode='edge')
-    center_pad = center + margin
+    center_pad = center_scaled + margin
     start = center_pad - margin
     end = center_pad + margin
 
@@ -164,7 +171,7 @@ def resize_img(img, scale):
     return new_img, actual_factor
 
 
-def visualize(renderer, img, params, verts, cam, joints):
+def visualize(renderer, img_path, img, params, verts, cam, joints):
     """Renders the result in original image coordinate frame."""
 
     vert_shifted, joints_orig = get_original(params, verts, cam, joints)
@@ -194,7 +201,8 @@ def visualize(renderer, img, params, verts, cam, joints):
     put_image_on_axis(img_mesh_rot1, 4, 'rotated 60 degree')
     put_image_on_axis(img_mesh_rot2, 5, 'rotated -60 degree')
 
-    plot.show()
+    plot.savefig("output/images/"+os.path.splitext(os.path.basename(img_path))[0]+".png")
+
 
 
 def draw_2d_on_image(input_image, joints, draw_edges=True, vis=None):

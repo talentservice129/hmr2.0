@@ -9,7 +9,7 @@ tqdm
 ## uncomment the following dependencies for generating tfrecords
 ## or using notebooks
 # pycocotools
-# trimesh
+trimesh
 # networkx
 # pyglet
 

@@ -21,11 +21,11 @@ try:
 except:  # noqa E722
     from tqdm import tqdm
 
-from main.config import Config
-from main.dataset import Dataset
-from main.discriminator import Discriminator
-from main.generator import Generator
-from main.model_util import batch_align_by_pelvis, batch_compute_similarity_transform, batch_rodrigues
+from .config import Config
+from .dataset import Dataset
+from .discriminator import Discriminator
+from .generator import Generator
+from .model_util import batch_align_by_pelvis, batch_compute_similarity_transform, batch_rodrigues
 
 import tensorflow.compat.v1.losses as v1_loss
 
@@ -76,14 +76,14 @@ class Model:
 
         self.generator = Generator()
         self.generator.build(input_shape=gen_input)
-        self.generator_opt = tf.optimizers.Adam(learning_rate=self.config.GENERATOR_LEARNING_RATE)
+        self.generator_opt = tf.optimizers.legacy.Adam(learning_rate=self.config.GENERATOR_LEARNING_RATE)
 
         if not self.config.ENCODER_ONLY:
             disc_input = (self.config.BATCH_SIZE, self.config.NUM_JOINTS * 9 + self.config.NUM_SHAPE_PARAMS)
 
             self.discriminator = Discriminator()
             self.discriminator.build(input_shape=disc_input)
-            self.discriminator_opt = tf.optimizers.Adam(learning_rate=self.config.DISCRIMINATOR_LEARNING_RATE)
+            self.discriminator_opt = tf.optimizers.legacy.Adam(learning_rate=self.config.DISCRIMINATOR_LEARNING_RATE)
 
         # setup checkpoint
         self.checkpoint_prefix = os.path.join(self.config.LOG_DIR, "ckpt")

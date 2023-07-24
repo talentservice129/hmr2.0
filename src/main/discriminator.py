@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras import layers
 
-from main.config import Config
+from .config import Config
 
 
 class CommonPoseDiscriminator(tf.keras.Model):

@@ -2,7 +2,7 @@ import h5py
 import numpy as np
 import tensorflow as tf
 
-from main.config import Config
+from .config import Config
 
 
 def batch_compute_similarity_transform(real_kp3d, pred_kp3d):

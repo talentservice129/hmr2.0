@@ -2,9 +2,9 @@ import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras.applications.resnet_v2 import ResNet50V2
 
-from main import model_util
-from main.config import Config
-from main.smpl import Smpl
+from . import model_util
+from .config import Config
+from .smpl import Smpl
 
 
 class Regressor(tf.keras.Model):
@@ -75,7 +75,7 @@ class Generator(tf.keras.Model):
                 # Nevertheless this is not needed as training seems to be likely stable.
                 # See https://www.tensorflow.org/guide/migrate#a_note_on_slim_contriblayers for more
                 # migration insights
-                setattr(layer, 'padding', 'same')
+                # setattr(layer, 'padding', 'same')
                 setattr(layer, 'kernel_initializer', vs_initializer)
                 setattr(layer, 'kernel_regularizer', l2_regularizer)
             if isinstance(layer, layers.BatchNormalization):

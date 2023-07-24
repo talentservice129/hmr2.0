@@ -6,3 +6,6 @@
 /src/eval/reports/
 /src/eval/old reports/
 /**/__pycache__/**
+/output/
+/src/visualise/output
+__MACOSX

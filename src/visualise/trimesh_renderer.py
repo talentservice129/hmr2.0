@@ -3,7 +3,7 @@ import numpy as np
 import trimesh
 import trimesh.transformations as trans
 
-from visualise.vis_util import load_faces
+from .vis_util import load_faces
 
 
 class TrimeshRenderer(object):

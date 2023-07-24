@@ -1,8 +1,8 @@
 import os
 from datetime import datetime
 
-from main.config import Config
-from main.model import Model
+from .config import Config
+from .model import Model
 
 
 class LocalConfig(Config):
