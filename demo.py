@@ -107,7 +107,7 @@ if __name__ == '__main__':
     class DemoConfig(Config):
         BATCH_SIZE = 1
         ENCODER_ONLY = True
-        LOG_DIR = os.path.abspath('logs/{}/{}'.format(args.setting, args.model))
+        LOG_DIR = os.path.abspath('hmr/logs/{}/{}'.format(args.setting, args.model))
         INITIALIZE_CUSTOM_REGRESSOR = args.init_toes
         JOINT_TYPE = args.joint_type
 
