@@ -2,6 +2,7 @@ import argparse
 import os
 import sys
 import glob
+import re
 
 import numpy as np
 import pandas as pd
@@ -28,7 +29,7 @@ def str2bool(v):
 def join_csv():
   path = 'hmr/output/csv/'                   
   all_files = glob.glob(os.path.join(path, "*.csv"))
-  all_files.sort(key=lambda x: int(x.split('/')[-1].split('.')[0]))
+  all_files.sort(key=lambda x: int(re.search("[\d]+", x).group()))
   df_from_each_file = (pd.read_csv(f) for f in all_files)
   concatenated_df   = pd.concat(df_from_each_file, ignore_index=True)
 
@@ -49,7 +50,7 @@ def main(img_path, json_path=None, input_shape=224):
     joints3d = np.squeeze(result['kp3d'].numpy())
 
     renderer = TrimeshRenderer()
-    visualize(renderer, img_path, original_img, params, vertices, cam, joints)
+    # visualize(renderer, img_path, original_img, params, vertices, cam, joints)
 
     # export to CSV
     joints_names = ['Ankle.R_x', 'Ankle.R_y', 'Ankle.R_z',
