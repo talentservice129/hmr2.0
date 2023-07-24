@@ -26,14 +26,14 @@ def str2bool(v):
         raise argparse.ArgumentTypeError('Boolean value expected.')
 
 def join_csv():
-  path = 'output/csv/'                   
+  path = 'hmr/output/csv/'                   
   all_files = glob.glob(os.path.join(path, "*.csv"))
   all_files.sort(key=lambda x: int(x.split('/')[-1].split('.')[0]))
   df_from_each_file = (pd.read_csv(f) for f in all_files)
   concatenated_df   = pd.concat(df_from_each_file, ignore_index=True)
 
   concatenated_df['frame'] = concatenated_df.index+1
-  concatenated_df.to_csv("output/csv_joined/csv_joined.csv", index=False)
+  concatenated_df.to_csv("hmr/output/csv_joined/csv_joined.csv", index=False)
 
 def main(img_path, json_path=None, input_shape=224):
     # initialize model
@@ -86,7 +86,7 @@ def main(img_path, json_path=None, input_shape=224):
     joints_export['hip.Center_y'] = hipCenter.iloc[0][1::3].sum()/2
     joints_export['hip.Center_z'] = hipCenter.iloc[0][2::3].sum()/2
     
-    joints_export.to_csv("output/csv/"+os.path.splitext(os.path.basename(img_path))[0]+".csv")
+    joints_export.to_csv("hmr/output/csv/"+os.path.splitext(os.path.basename(img_path))[0]+".csv")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Demo HMR2.0')

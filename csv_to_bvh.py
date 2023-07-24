@@ -13,7 +13,7 @@ for object in objects:
 print(empties)
 
 filename = 'csv_joined.csv'
-directory = r'output/csv_joined'  # <-- if you have linux or osx
+directory = r'hmr/output/csv_joined'  # <-- if you have linux or osx
 
 fullpath = os.path.join(directory, filename)
 
@@ -44,6 +44,6 @@ with open(fullpath, 'r', newline='') as csvfile:
 
 # bpy.data.objects['rig'].select = True
 
-target_file = 'output/bvh_animation/estimated_animation.bvh'
+target_file = 'hmr/output/bvh_animation/estimated_animation.bvh'
 
 bpy.ops.export_anim.bvh(filepath=target_file)

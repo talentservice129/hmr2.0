@@ -201,7 +201,7 @@ def visualize(renderer, img_path, img, params, verts, cam, joints):
     put_image_on_axis(img_mesh_rot1, 4, 'rotated 60 degree')
     put_image_on_axis(img_mesh_rot2, 5, 'rotated -60 degree')
 
-    plot.savefig("output/images/"+os.path.splitext(os.path.basename(img_path))[0]+".png")
+    plot.savefig("hmr/output/images/"+os.path.splitext(os.path.basename(img_path))[0]+".png")
 
 
 
